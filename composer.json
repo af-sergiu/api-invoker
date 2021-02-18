@@ -1,0 +1,17 @@
+{
+    "name": "af-sergiu/api-invoker",
+    "description": "PHP library for api call",
+    "type": "library",
+    "authors": [
+        {
+            "name": "af-sergiu",
+            "email": "af.sergiu@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
+}
