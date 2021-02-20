@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AfSergiu\ApiInvoker\Contracts;
+namespace AfSergiu\ApiInvoker\Contracts\Http;
 
 use Psr\Http\Message\RequestInterface;
 

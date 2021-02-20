@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AfSergiu\ApiInvoker\Contracts;
+namespace AfSergiu\ApiInvoker\Contracts\Http;
 
 use Psr\Http\Message\RequestInterface;
 
@@ -12,7 +12,7 @@ interface IRequestBuilder
 {
     public function setMethod(string $httpMethod);
 
-    public function setUrl(string $url);
+    public function setUrl(string $uri);
 
     public function setHeaders(array $headers);
 
