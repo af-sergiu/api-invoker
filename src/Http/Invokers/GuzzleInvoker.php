@@ -41,7 +41,7 @@ class GuzzleInvoker implements IRequestInvoker
         if ($this->response instanceof ResponseInterface) {
             return $reader->read($this->response);
         } else {
-            throw new \RuntimeException('Request is not invoked');
+            throw new \RuntimeException('Request was not invoked');
         }
     }
 }
