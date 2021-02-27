@@ -10,7 +10,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "AfSergiu\\ApiInvoker\\": "src/"
+      "AfSergiu\\ApiInvoker\\": "src/",
+      "AfSergiu\\ApiInvoker\\Tests\\": "tests/"
     }
   },
   "require": {
