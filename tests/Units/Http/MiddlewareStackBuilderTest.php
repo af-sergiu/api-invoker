@@ -2,7 +2,7 @@
 
 namespace AfSergiu\ApiInvoker\Tests;
 
-use AfSergiu\ApiInvoker\Http\Middlewares\MiddlewareStackBuilder;
+use AfSergiu\ApiInvoker\Http\Middleware\MiddlewareStackBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;

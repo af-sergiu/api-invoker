@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AfSergiu\ApiInvoker\Http\Middlewares;
+namespace AfSergiu\ApiInvoker\Http\Middleware;
 
 use AfSergiu\ApiInvoker\Contracts\IMiddlewareStackBuilder;
 use Psr\Container\ContainerInterface;
