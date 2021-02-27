@@ -5,13 +5,8 @@ namespace AfSergiu\ApiInvoker\Contracts\Http;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-interface IAfterMiddleware
+interface IAfterMiddleware extends IMiddleware
 {
-    /**
-     * Устанавливает следующий обработчик
-     */
-    public function setNext(\Closure $next): void;
-
     /**
      * Выполняет основной функционал обработки
      */

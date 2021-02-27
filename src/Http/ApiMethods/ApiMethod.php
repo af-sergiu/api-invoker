@@ -8,7 +8,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
 
-class ApiMethod implements IApiMethod
+abstract class ApiMethod implements IApiMethod
 {
     /**
      * @var IRequestConstructor
@@ -38,9 +38,40 @@ class ApiMethod implements IApiMethod
         $this->requestInvoker = $requestInvoker;
     }
 
+    /**
+     * @param IResponseReader $responseReader
+     * @return mixed
+     */
     public function call(IResponseReader $responseReader)
     {
-        // TODO: Implement call() method.
+        $this->createRequest();
+        $this->invokeBeforeMiddlewares();
+        $this->callRequest();
+        $this->invokeAfterMiddlewares();
+        return $this->readRequest($responseReader);
+    }
+
+    abstract protected function createRequest(): void;
+
+    private function invokeBeforeMiddlewares(): void
+    {
+        $middlewares = $this->getBeforeMiddlewares();
+        $middlewareChain = $this->getCallableChain($middlewares);
+        $middlewareChain->__invoke($this->request);
+    }
+
+    private function getCallableChain(array $middlewares, int $currentIdx=0): \Closure
+    {
+        return function (...$arguments) use ($middlewares, $currentIdx)
+        {
+            $middleware = $this->instantiateMiddleware($middlewares[$currentIdx]);
+            if ($currentIdx === array_key_last($middlewares)) {
+                return $middleware->handle(null, function(){});
+            } else {
+                $nextIdx = $currentIdx + 1;
+                return $middleware->handle(null, $this->getCallableChain($middlewares, $nextIdx));
+            }
+        };
     }
 
     protected function getBeforeMiddlewares(): array

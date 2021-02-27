@@ -7,11 +7,6 @@ use Psr\Http\Message\RequestInterface;
 interface IBeforeMiddleware
 {
     /**
-     * Устанавливает следующий обработчик
-     */
-    public function setNext(\Closure $next): void;
-
-    /**
      * Выполняет основной функционал обработки
      */
     public function handle(RequestInterface $request): RequestInterface;
