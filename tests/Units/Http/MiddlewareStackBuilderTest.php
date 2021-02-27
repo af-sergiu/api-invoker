@@ -83,22 +83,6 @@ class MiddlewareStackBuilderTest extends TestCase
         return $mock;
     }
 
-//    private function createCallableMiddlewareMock(): MockObject
-//    {
-//        $mock = $this->getMockBuilder(\stdClass::class)
-//            ->addMethods(['__invoke'])
-//            ->getMock();
-//        $mock->method('__invoke')
-//            ->willReturn($this->callback(function ()
-//            {
-//                $nextHandlerArg = func_get_arg(0);
-//                $arguments = array_slice(func_get_args(), 1);
-//                return $nextHandlerArg($arguments);
-//            })
-//            );
-//        return $mock;
-//    }
-
     private function createContainerWithEntries(): MockObject {
         $mock = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
