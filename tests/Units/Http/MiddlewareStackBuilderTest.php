@@ -75,10 +75,8 @@ class MiddlewareStackBuilderTest extends TestCase
         $mock->method('handle')
             ->willReturn($this->returnCallback(function ()
                 {
-//                    echo count(func_get_args()) . "\n";
                     $nextHandlerArg = func_get_arg(0);
                     $arguments = array_slice(func_get_args(), 1);
-//                    echo print_r($arguments, true) . "\n";
                     return $nextHandlerArg(...$arguments);
                 })
             );
