@@ -12,27 +12,27 @@ class MiddlewareStackBuilder implements IMiddlewareStackBuilder
      * @var ContainerInterface
      */
     private $container;
-    private $middlewares = [];
+    private $middlewareList = [];
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    public function createChain(array $middlewares): \Closure
+    public function createChain(array $middleware): \Closure
     {
-        $this->middlewares = $middlewares;
-        if (count($middlewares)) {
+        $this->middlewareList = $middleware;
+        if (count($middleware)) {
             return $this->createRecursiveChain();
         } else {
             return $this->getLastCallback();
         }
     }
 
-    private function createRecursiveChain(int $idx=0)
+    private function createRecursiveChain(int $idx=0): \Closure
     {
         $nextHandler = $this->getNextHandler($idx);
-        $middleware = $this->resolveMiddleware($this->middlewares[$idx]);
+        $middleware = $this->resolveMiddleware($this->middlewareList[$idx]);
         return function (...$arguments) use ($middleware, $nextHandler)
         {
             return $this->invokeMiddleware($middleware, $nextHandler, ...$arguments);
@@ -42,7 +42,7 @@ class MiddlewareStackBuilder implements IMiddlewareStackBuilder
     private function getNextHandler(int $idx): \Closure
     {
         $nextidx = $idx + 1;
-        if (isset($this->middlewares[$nextidx])) {
+        if (isset($this->middlewareList[$nextidx])) {
             $nextHandler = $this->createRecursiveChain($nextidx);
         } else {
             $nextHandler = $this->getLastCallback();
@@ -52,7 +52,7 @@ class MiddlewareStackBuilder implements IMiddlewareStackBuilder
 
     private function getLastCallback(...$middlewareArguments): \Closure
     {
-        return function (...$middlewareArguments): \Closure
+        return function (...$middlewareArguments)
         {
             return func_get_arg(0);
         };

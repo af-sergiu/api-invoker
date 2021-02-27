@@ -9,45 +9,62 @@ use Psr\Container\ContainerInterface;
 
 class MiddlewareStackBuilderTest extends TestCase
 {
-    public function testChainInvokeAllMiddleware():void
+    /**
+     * @var MockObject
+     */
+    private $container;
+    /**
+     * @var array
+     */
+    private $containerMiddlewareEntries = [];
+    /**
+     * @var MockObject
+     */
+    private $instanceMiddlewareMock;
+
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
-        $instanceMiddlewareMock = $this->createInstanceMiddlewareMock();
-        $callableMiddlewareMock = $this->createCallableMiddlewareMock();
-        $containerEntries = [
-            'middleware1' => $instanceMiddlewareMock,
-            'middleware2' => $instanceMiddlewareMock,
-            'middleware3' => $instanceMiddlewareMock
+        parent::__construct($name, $data, $dataName);
+        $this->instanceMiddlewareMock = $this->createInstanceMiddlewareMock();
+        $this->containerMiddlewareEntries = [
+            'middleware1' => $this->instanceMiddlewareMock,
+            'middleware2' => $this->instanceMiddlewareMock,
+            'middleware3' => $this->instanceMiddlewareMock
         ];
-        $instantiatingMiddlewares = array_keys($containerEntries);
-        $callableMiddlewares = [
-            get_class($callableMiddlewareMock),
-            get_class($callableMiddlewareMock)
-        ];
-        $container = $this->createContainerWithEntries($containerEntries);
-        $middlewares = array_merge($instantiatingMiddlewares, $callableMiddlewares);
-        $middlewareArguments = [
-            'argument1',
-            new \stdClass()
-        ];
+        $this->container = $this->createContainerWithEntries();
+    }
 
-        $stackBuilder = new MiddlewareStackBuilder($container);
-        $closureChain = $stackBuilder->createChain($middlewares);
+    public function testChainInvokedAllMiddleware():void
+    {
+        $instantiatingMiddleware = array_keys($this->containerMiddlewareEntries);
+        $middleware = array_merge($instantiatingMiddleware);
+        $middlewareArguments = ['argument1', new \stdClass()];
+
+        $stackBuilder = new MiddlewareStackBuilder($this->container);
+        $closureChain = $stackBuilder->createChain($middleware);
+
+        $this->instanceMiddlewareMock->expects($this->exactly(count($instantiatingMiddleware)))
+            ->method('handle');
         $closureChain(...$middlewareArguments);
+    }
 
-        $instanceMiddlewareMock->expects($this->exactly(count($instantiatingMiddlewares)))
+    public function testChainInvokedWithCorrectArguments():void
+    {
+        $instantiatingMiddleware = array_keys($this->containerMiddlewareEntries);
+        $middleware = array_merge($instantiatingMiddleware);
+        $middlewareArguments = ['argument1', new \stdClass()];
+
+        $stackBuilder = new MiddlewareStackBuilder($this->container);
+        $closureChain = $stackBuilder->createChain($middleware);
+
+        $this->instanceMiddlewareMock->expects($this->exactly(count($instantiatingMiddleware)))
             ->method('handle')
             ->with(
                 $this->isInstanceOf(\Closure::class),
                 $this->equalTo($middlewareArguments[0]),
                 $this->equalTo($middlewareArguments[1])
             );
-        $callableMiddlewareMock->expects($this->exactly(count($instantiatingMiddlewares)))
-            ->method('__invoke')
-            ->with(
-                $this->isInstanceOf(\Closure::class),
-                $this->equalTo($middlewareArguments[0]),
-                $this->equalTo($middlewareArguments[1])
-            );
+        $closureChain(...$middlewareArguments);
     }
 
     private function createInstanceMiddlewareMock(): MockObject
@@ -56,39 +73,41 @@ class MiddlewareStackBuilderTest extends TestCase
             ->addMethods(['handle'])
             ->getMock();
         $mock->method('handle')
-            ->willReturn($this->callback(function ()
+            ->willReturn($this->returnCallback(function ()
                 {
+//                    echo count(func_get_args()) . "\n";
                     $nextHandlerArg = func_get_arg(0);
                     $arguments = array_slice(func_get_args(), 1);
-                    return $nextHandlerArg($arguments);
+//                    echo print_r($arguments, true) . "\n";
+                    return $nextHandlerArg(...$arguments);
                 })
             );
         return $mock;
     }
 
-    private function createCallableMiddlewareMock(): MockObject
-    {
-        $mock = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['__invoke'])
-            ->getMock();
-        $mock->method('__invoke')
-            ->willReturn($this->callback(function ()
-            {
-                $nextHandlerArg = func_get_arg(0);
-                $arguments = array_slice(func_get_args(), 1);
-                return $nextHandlerArg($arguments);
-            })
-            );
-        return $mock;
-    }
+//    private function createCallableMiddlewareMock(): MockObject
+//    {
+//        $mock = $this->getMockBuilder(\stdClass::class)
+//            ->addMethods(['__invoke'])
+//            ->getMock();
+//        $mock->method('__invoke')
+//            ->willReturn($this->callback(function ()
+//            {
+//                $nextHandlerArg = func_get_arg(0);
+//                $arguments = array_slice(func_get_args(), 1);
+//                return $nextHandlerArg($arguments);
+//            })
+//            );
+//        return $mock;
+//    }
 
-    private function createContainerWithEntries(array $entries): MockObject {
+    private function createContainerWithEntries(): MockObject {
         $mock = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
         $mock->method('get')
-            ->willReturn($this->returnCallback(function () use ($entries) {
+            ->willReturn($this->returnCallback(function () {
                 $key = func_get_arg(0);
-                return $entries[$key];
+                return $this->containerMiddlewareEntries[$key];
             }));
         return $mock;
     }

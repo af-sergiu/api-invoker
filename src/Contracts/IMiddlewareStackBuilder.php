@@ -8,5 +8,5 @@ namespace AfSergiu\ApiInvoker\Contracts;
 
 interface IMiddlewareStackBuilder
 {
-    public function createChain(array $middlewares): \Closure;
+    public function createChain(array $middleware): \Closure;
 }
