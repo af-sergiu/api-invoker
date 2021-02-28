@@ -6,7 +6,11 @@
 
 namespace AfSergiu\ApiInvoker\Contracts\Http\Middleware;
 
-interface IMiddlewareStackBuilder
+interface IMiddlewareChainBuilder
 {
+    /**
+     * @param array<int, string|\Closure> $middleware
+     * @return \Closure
+     */
     public function createChain(array $middleware): \Closure;
 }

@@ -11,10 +11,10 @@ use Psr\Http\Message\RequestInterface;
 interface IBeforeMiddlewareInvoker
 {
     /**
-     * @param array<IBeforeMiddleware|\Closure> $middleware
-     * @return mixed
+     * @param array<int, string|\Closure> $middleware
+     * @return void
      */
-    public function createChain(array $middleware);
+    public function createChain(array $middleware): void;
 
     /**
      * @param RequestInterface $request

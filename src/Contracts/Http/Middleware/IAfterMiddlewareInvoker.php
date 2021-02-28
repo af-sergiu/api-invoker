@@ -12,10 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 interface IAfterMiddlewareInvoker
 {
     /**
-     * @param array<IAfterMiddleware|\Closure> $middleware
-     * @return mixed
+     * @param array<int, string|\Closure> $middleware
+     * @return void
      */
-    public function createChain(array $middleware);
+    public function createChain(array $middleware): void;
 
     /**
      * @param ResponseInterface $response

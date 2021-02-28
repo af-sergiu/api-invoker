@@ -2,11 +2,11 @@
 
 namespace AfSergiu\ApiInvoker\Http\Middleware;
 
-use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IMiddlewareStackBuilder;
+use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IMiddlewareChainBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class MiddlewareStackBuilder implements IMiddlewareStackBuilder
+class MiddlewareChainBuilder implements IMiddlewareChainBuilder
 {
     /**
      * @var ContainerInterface

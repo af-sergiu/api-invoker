@@ -2,12 +2,12 @@
 
 namespace AfSergiu\ApiInvoker\Tests;
 
-use AfSergiu\ApiInvoker\Http\Middleware\MiddlewareStackBuilder;
+use AfSergiu\ApiInvoker\Http\Middleware\MiddlewareChainBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-class MiddlewareStackBuilderTest extends TestCase
+class MiddlewareChainBuilderTest extends TestCase
 {
     /**
      * @var MockObject
@@ -40,7 +40,7 @@ class MiddlewareStackBuilderTest extends TestCase
         $middleware = array_merge($instantiatingMiddleware);
         $middlewareArguments = ['argument1', new \stdClass()];
 
-        $stackBuilder = new MiddlewareStackBuilder($this->container);
+        $stackBuilder = new MiddlewareChainBuilder($this->container);
         $closureChain = $stackBuilder->createChain($middleware);
 
         $this->instanceMiddlewareMock->expects($this->exactly(count($instantiatingMiddleware)))
@@ -54,7 +54,7 @@ class MiddlewareStackBuilderTest extends TestCase
         $middleware = array_merge($instantiatingMiddleware);
         $middlewareArguments = ['argument1', new \stdClass()];
 
-        $stackBuilder = new MiddlewareStackBuilder($this->container);
+        $stackBuilder = new MiddlewareChainBuilder($this->container);
         $closureChain = $stackBuilder->createChain($middleware);
 
         $this->instanceMiddlewareMock->expects($this->exactly(count($instantiatingMiddleware)))
