@@ -60,9 +60,9 @@ class MiddlewareStackBuilderTest extends TestCase
         $this->instanceMiddlewareMock->expects($this->exactly(count($instantiatingMiddleware)))
             ->method('handle')
             ->with(
-                $this->isInstanceOf(\Closure::class),
                 $this->equalTo($middlewareArguments[0]),
-                $this->equalTo($middlewareArguments[1])
+                $this->equalTo($middlewareArguments[1]),
+                $this->isInstanceOf(\Closure::class)
             );
         $closureChain(...$middlewareArguments);
     }
@@ -75,9 +75,10 @@ class MiddlewareStackBuilderTest extends TestCase
         $mock->method('handle')
             ->willReturn($this->returnCallback(function ()
                 {
-                    $nextHandlerArg = func_get_arg(0);
-                    $arguments = array_slice(func_get_args(), 1);
-                    return $nextHandlerArg(...$arguments);
+                    $middlewareArgs = func_get_args();
+                    $nextHandler = $this->getNextHandlerFromArgs($middlewareArgs);
+                    $nextHandlerArguments = $this->getArgsWithoutNextHandler($middlewareArgs);
+                    return $nextHandler(...$nextHandlerArguments);
                 })
             );
         return $mock;
@@ -92,5 +93,17 @@ class MiddlewareStackBuilderTest extends TestCase
                 return $this->containerMiddlewareEntries[$key];
             }));
         return $mock;
+    }
+
+    private function getNextHandlerFromArgs(array $middlewareArgs): \Closure
+    {
+        $lastArgumentKey = array_key_last($middlewareArgs);
+        return $middlewareArgs[$lastArgumentKey];
+    }
+
+    private function getArgsWithoutNextHandler(array $middlewareArgs): array
+    {
+        $argsCount = count($middlewareArgs);
+        return array_slice($middlewareArgs, 0, $argsCount-1);
     }
 }

@@ -92,10 +92,12 @@ class MiddlewareStackBuilder implements IMiddlewareStackBuilder
 
     private function invokeMiddleware($middleware, $nextHandler, ...$arguments)
     {
+        $middlewareArgs = $arguments;
+        array_push($middlewareArgs, $nextHandler);
         if (is_object($middleware)) {
-            $middleware->handle($nextHandler, ...$arguments);
+            $middleware->handle(...$middlewareArgs);
         } else {
-            $middleware->__invoke($nextHandler, ...$arguments);
+            $middleware->__invoke(...$middlewareArgs);
         }
     }
 }
