@@ -7,21 +7,17 @@ use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
+use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
+use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class ApiMethod implements IApiMethod
 {
     /**
-     * @var IRequestConstructor
-     */
-    private $requestConstructor;
-    /**
-     * @var IRequestInvoker
-     */
-    private $requestInvoker;
-    /**
      * @var string
      */
-    protected $httpMethod = '';
+    protected $httpMethod = 'GET';
     /**
      * @var string
      */
@@ -29,13 +25,54 @@ abstract class ApiMethod implements IApiMethod
     /**
      * @var array
      */
-    protected $headers = [];
+    protected $parameters = [];
+    /**
+     * @var array
+     */
+    protected $beforeMiddleware = [];
+    /**
+     * @var array
+     */
+    protected $afterMiddleware = [];
+    /**
+     * @var IRequestConstructor
+     */
+    protected $requestConstructor;
+    /**
+     * @var IRequestBuilder
+     */
+    protected $requestBuilder;
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+    /**
+     * @var IRequestInvoker
+     */
+    private $requestInvoker;
+    /**
+     * @var IBeforeMiddlewareInvoker
+     */
+    private $beforeMiddlewareInvoker;
+    /**
+     * @var IAfterMiddlewareInvoker
+     */
+    private $afterMiddlewareInvoker;
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
 
-    public function __construct(IRequestConstructor $requestConstructor, IRequestInvoker $requestInvoker)
-    {
-
+    public function __construct(
+        IRequestConstructor $requestConstructor,
+        IRequestInvoker $requestInvoker,
+        IBeforeMiddlewareInvoker $beforeMiddlewareInvoker,
+        IAfterMiddlewareInvoker $afterMiddlewareInvoker
+    ) {
         $this->requestConstructor = $requestConstructor;
         $this->requestInvoker = $requestInvoker;
+        $this->beforeMiddlewareInvoker = $beforeMiddlewareInvoker;
+        $this->afterMiddlewareInvoker = $afterMiddlewareInvoker;
     }
 
     /**
@@ -44,53 +81,56 @@ abstract class ApiMethod implements IApiMethod
      */
     public function call(IResponseReader $responseReader)
     {
-        $this->createRequest();
-        $this->invokeBeforeMiddlewares();
-        $this->callRequest();
-        $this->invokeAfterMiddlewares();
+        $this->request = $this->createRequest();
+        $this->invokeBeforeMiddleware();
+        $this->response = $this->callRequest();
+        $this->invokeAfterMiddleware();
         return $this->readRequest($responseReader);
     }
 
-    abstract protected function createRequest(): void;
-
-    private function invokeBeforeMiddlewares(): void
+    protected function createRequest(): RequestInterface
     {
-        $middlewares = $this->getBeforeMiddlewares();
-        $middlewareChain = $this->getCallableChain($middlewares);
-        $middlewareChain->__invoke($this->request);
+        if ($this->requestBuilder) {
+            return $this->requestConstructor->create($this->requestBuilder);
+        } else {
+            return $this->requestConstructor->createByDefaultBuilder($this->uri, $this->parameters, $this->httpMethod);
+        }
     }
 
-    private function getCallableChain(array $middlewares, int $currentIdx=0): \Closure
+    private function invokeBeforeMiddleware(): void
     {
-        return function (...$arguments) use ($middlewares, $currentIdx)
-        {
-            $middleware = $this->instantiateMiddleware($middlewares[$currentIdx]);
-            if ($currentIdx === array_key_last($middlewares)) {
-                return $middleware->handle(null, function(){});
-            } else {
-                $nextIdx = $currentIdx + 1;
-                return $middleware->handle(null, $this->getCallableChain($middlewares, $nextIdx));
-            }
-        };
+        $this->beforeMiddlewareInvoker->createChain($this->beforeMiddleware);
+        $this->beforeMiddlewareInvoker->invokeChain($this->request);
     }
 
-    protected function getBeforeMiddlewares(): array
+    private function callRequest(): ResponseInterface
+    {
+        return $this->requestInvoker->invoke($this->request);
+    }
+
+    private function invokeAfterMiddleware(): void
+    {
+        $this->afterMiddlewareInvoker->createChain($this->afterMiddleware);
+        $this->afterMiddlewareInvoker->invokeChain($this->response, $this->request);
+    }
+
+    protected function getAfterMiddleware(): array
     {
         return [];
     }
 
-    protected function getAfterMiddlewares(): array
+    private function readRequest(IResponseReader $responseReader)
     {
-        return [];
+        $responseReader->read($this->response);
     }
 
-    public function changeRequestBuilder(IRequestBuilder $requestBuilder)
+    public function setRequestBuilder(IRequestBuilder $requestBuilder)
     {
-        // TODO: Implement changeRequestBuilder() method.
+        $this->requestBuilder = $requestBuilder;
     }
 
-    public function changeRequestArrayBuilder(array $requestBuilder)
+    public function setRequestParameters(array $parameters)
     {
-        // TODO: Implement changeRequestArrayBuilder() method.
+        $this->parameters = $parameters;
     }
 }

@@ -10,13 +10,37 @@ use Psr\Http\Message\RequestInterface;
 
 interface IRequestBuilder
 {
+    /**
+     * Set http method
+     * @param string $httpMethod
+     * @return mixed
+     */
     public function setMethod(string $httpMethod);
 
-    public function setUrl(string $uri);
+    /**
+     * Set uri
+     * @param string $uri
+     * @return mixed
+     */
+    public function setUri(string $uri);
 
+    /**
+     * Set headers
+     * @param array $headers
+     * @return mixed
+     */
     public function setHeaders(array $headers);
 
+    /**
+     * Set parameters
+     * @param array $parameters
+     * @return mixed
+     */
     public function setParameters(array $parameters);
 
+    /**
+     * Get result request
+     * @return RequestInterface
+     */
     public function getResult(): RequestInterface;
 }

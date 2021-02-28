@@ -1,13 +1,26 @@
 <?php declare(strict_types=1);
 
+/**
+ * Содержит логику непосредственного выполнения запроса и дает инструмент для чтения ответа на запрос
+ */
 namespace AfSergiu\ApiInvoker\Contracts\Http;
 
-
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 interface IRequestInvoker
 {
-    public function invoke(RequestInterface $request);
+    /**
+     * Вызывает запрос
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     */
+    public function invoke(RequestInterface $request): ResponseInterface;
 
+    /**
+     * Читает ответ на запрос
+     * @param IResponseReader $reader
+     * @return mixed
+     */
     public function read(IResponseReader $reader);
 }

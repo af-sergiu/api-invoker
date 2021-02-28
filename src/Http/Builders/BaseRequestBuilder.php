@@ -39,7 +39,7 @@ abstract class BaseRequestBuilder implements IRequestBuilder
         $this->httpMethod = $httpMethod;
     }
 
-    public function setUrl(string $uri)
+    public function setUri(string $uri)
     {
         $this->uri = $uri;
     }

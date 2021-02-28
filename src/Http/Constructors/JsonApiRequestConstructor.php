@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Класс, конструирующий простой запрос
+ */
+
 namespace AfSergiu\ApiInvoker\Http\Constructors;
 
 use AfSergiu\ApiInvoker\Http\Builders\JsonRequestBuilder;
@@ -7,11 +11,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use Psr\Http\Message\RequestInterface;
 
-/**
- * Класс, конструирующий простой запрос
- */
-
-class ConcreteApiRequestConstructor implements IRequestConstructor
+class JsonApiRequestConstructor implements IRequestConstructor
 {
     /**
      * @var JsonRequestBuilder
@@ -31,10 +31,10 @@ class ConcreteApiRequestConstructor implements IRequestConstructor
         return $requestBuilder->getResult();
     }
 
-    public function createArrayRequest(string $method, string $url, array $parameters): RequestInterface
+    public function createByDefaultBuilder(string $uri, array $parameters = [], string $method = 'GET'): RequestInterface
     {
         $this->defaultBuilder->setMethod($method);
-        $this->defaultBuilder->setUrl($url);
+        $this->defaultBuilder->setUri($uri);
         $this->defaultBuilder->setParameters($parameters);
         $this->defaultBuilder->setHeaders([
             'Content-Type' => 'text/json'
