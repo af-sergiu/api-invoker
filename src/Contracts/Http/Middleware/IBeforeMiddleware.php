@@ -8,6 +8,9 @@ interface IBeforeMiddleware
 {
     /**
      * Выполняет основной функционал обработки
+     * @param RequestInterface $request
+     * @param \Closure $next
+     * @return RequestInterface
      */
-    public function handle(RequestInterface $request): RequestInterface;
+    public function handle(RequestInterface $request, \Closure $next): RequestInterface;
 }
