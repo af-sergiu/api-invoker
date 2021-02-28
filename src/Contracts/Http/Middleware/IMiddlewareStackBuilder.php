@@ -4,7 +4,7 @@
  * Собирает цепь Middleware
  */
 
-namespace AfSergiu\ApiInvoker\Contracts;
+namespace AfSergiu\ApiInvoker\Contracts\Http\Middleware;
 
 interface IMiddlewareStackBuilder
 {
