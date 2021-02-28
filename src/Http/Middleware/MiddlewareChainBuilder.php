@@ -12,6 +12,9 @@ class MiddlewareChainBuilder implements IMiddlewareChainBuilder
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var array
+     */
     private $middlewareList = [];
 
     public function __construct(ContainerInterface $container)
@@ -95,9 +98,9 @@ class MiddlewareChainBuilder implements IMiddlewareChainBuilder
         $middlewareArgs = $arguments;
         array_push($middlewareArgs, $nextHandler);
         if (is_object($middleware)) {
-            $middleware->handle(...$middlewareArgs);
+            return $middleware->handle(...$middlewareArgs);
         } else {
-            $middleware->__invoke(...$middlewareArgs);
+            return $middleware->__invoke(...$middlewareArgs);
         }
     }
 }
