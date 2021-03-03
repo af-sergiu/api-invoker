@@ -11,7 +11,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Http\Constructors\JsonApiRequestConstructor;
 
-class DemoApiMethod extends ApiMethod
+class DemoBaseApiMethod extends BaseApiMethod
 {
     /**
      * @var string

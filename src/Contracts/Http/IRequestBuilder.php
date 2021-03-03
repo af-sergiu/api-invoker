@@ -32,11 +32,11 @@ interface IRequestBuilder
     public function setHeaders(array $headers);
 
     /**
-     * Set parameters
-     * @param array $parameters
+     * Set body request
+     * @param string $parameters
      * @return mixed
      */
-    public function setParameters(array $parameters);
+    public function setBody(string $parameters);
 
     /**
      * Get result request

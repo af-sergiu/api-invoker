@@ -6,7 +6,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 
-abstract class BaseRequestBuilder implements IRequestBuilder
+class BaseRequestBuilder implements IRequestBuilder
 {
     /**
      * @var RequestInterface
@@ -47,5 +47,10 @@ abstract class BaseRequestBuilder implements IRequestBuilder
     public function setHeaders(array $headers)
     {
         $this->headers = $headers;
+    }
+
+    public function setBody(string $parameters)
+    {
+        $this->body = $parameters;
     }
 }

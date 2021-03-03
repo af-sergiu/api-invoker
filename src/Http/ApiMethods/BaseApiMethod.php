@@ -12,7 +12,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class ApiMethod implements IApiMethod
+abstract class BaseApiMethod implements IApiMethod
 {
     /**
      * @var string
