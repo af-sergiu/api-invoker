@@ -2,6 +2,10 @@
 Library for invoke api requests
 
 ## Usage
+Для организации работы с api нам необходиом создать конструктор запросов `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor` и дефолтный строитель `AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder` запросов, необходимые нам методы api `AfSergiu\ApiInvoker\Contracts\Http\IResponseReader`.
+
+Конструктор запросов, отвечает за управление конструированием запроса api, вызывая методы билдера, он устанавливает параметры, характерные для всех запросов к api: http-аутентификацию, заголовки, порядок установки параметров в тело запроса (xml, json и т.п.). Конструктор должен реализовывать интерфейс `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor`.
+ 
 #### Define constructor for your API
 
 
