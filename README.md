@@ -2,28 +2,17 @@
 Library for invoke api requests
 
 ## Usage
-Для организации работы с api нам необходиом создать конструктор запросов `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor` и дефолтный строитель `AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder` запросов, необходимые нам методы api `AfSergiu\ApiInvoker\Contracts\Http\IResponseReader`.
+Для организации работы с api нам необходиом создать конструктор запросов `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor`, необходимые нам методы api `AfSergiu\ApiInvoker\Contracts\Http\IResponseReader` и ридеры к ним `AfSergiu\ApiInvoker\Contracts\Http\IResponseReader`.
 
 Конструктор запросов, отвечает за управление конструированием запроса api, вызывая методы билдера, он устанавливает параметры, характерные для всех запросов к api: http-аутентификацию, заголовки, порядок установки параметров в тело запроса (xml, json и т.п.). Конструктор должен реализовывать интерфейс `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor`.
+
+Конструктор должен реализовывать два метода:
+ * `create(Psr\Http\Message\RequestInterface\IRequestBuilder $requestBuilder): Psr\Http\Message\RequestInterface` - создает запрос с помощью конкретного билдера запроса, где билдер содержит уже установленный uri, метод запроса и параметры запроса. Конструктор только установливает базовые параметры, указанные выше;
+ * `сreateByDefaultBuilder(string $uri, array $parameters=[], string $method='GET'): Psr\Http\Message\RequestInterface` - создает запрос с помощью базового билдера `AfSergiu\ApiInvoker\Http\Builders\BaseRequestBuilder`, где uri метод запроса и параметры передаются, как аргументы. Если запрос использует подпись, то она формируется в этом методе
+ 
+ 
  
 #### Define constructor for your API
-
-
-    <?php
-    
-    /**
-     * Default request builder for concrete api service
-     */
-     
-    use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
-    
-    class DefaultRequestBuilder implements IRequestBuilder
-    {   
-        public function setParameters(array $parameters)
-        {
-            $this->body = json_encode($parameters);
-        }
-    }
     
     <?php
     
@@ -74,11 +63,11 @@ Library for invoke api requests
         protected $beforeMiddleware = [
             MiddlwareHandler::class,
             'functionName1'
-        ]
+        ];
         protected $afterMiddleware = [
             MiddlwareHandler1::class,
             'functionName2'
-        ]
+        ];
         protected $parameters = [];
         
         protected function setRequestParameters(array $parameters)
