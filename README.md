@@ -8,7 +8,7 @@ Library for invoke api requests
     <?php
     
     /**
-     * Default request builder for this API
+     * Default request builder for concrete api service
      */
      
     use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
