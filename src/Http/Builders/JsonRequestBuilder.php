@@ -8,7 +8,7 @@ namespace AfSergiu\ApiInvoker\Http\Builders;
 
 class JsonRequestBuilder extends BaseRequestBuilder
 {
-    protected function getRequireHeaders(): array
+    protected function getRequiredHeaders(): array
     {
         return [
             'Content-Type' => 'text/json'

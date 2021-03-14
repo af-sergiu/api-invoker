@@ -9,7 +9,7 @@ namespace AfSergiu\ApiInvoker\Http\ApiMethods;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
-use AfSergiu\ApiInvoker\Http\Constructors\JsonApiRequestConstructor;
+use AfSergiu\ApiInvoker\Http\Constructors\RequestConstructor;
 
 class DemoBaseApiMethod extends BaseApiMethod
 {
@@ -26,12 +26,12 @@ class DemoBaseApiMethod extends BaseApiMethod
      */
     protected $parameters = [];
     /**
-     * @var JsonApiRequestConstructor
+     * @var RequestConstructor
      */
     protected $requestConstructor;
 
     public function __construct(
-        JsonApiRequestConstructor $requestConstructor,
+        RequestConstructor $requestConstructor,
         IRequestInvoker $requestInvoker,
         IBeforeMiddlewareInvoker $beforeMiddlewareInvoker,
         IAfterMiddlewareInvoker $afterMiddlewareInvoker

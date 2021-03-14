@@ -45,13 +45,13 @@ abstract class BaseRequestBuilder implements IRequestBuilder
 
     final public function setHeaders(array $addHeaders)
     {
-        $this->headers = array_merge($this->getRequireHeaders(), $addHeaders);
+        $this->headers = array_merge($this->getRequiredHeaders(), $addHeaders);
     }
 
     /**
      * Возвращает обязательные заголовки для запросов этого типа api
      */
-    abstract protected function getRequireHeaders(): array;
+    abstract protected function getRequiredHeaders(): array;
 
     final public function setBodyParameters(array $parameters)
     {

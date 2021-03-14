@@ -4,13 +4,13 @@ namespace AfSergiu\ApiInvoker\Factories\Http;
 
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use AfSergiu\ApiInvoker\Http\Builders\JsonRequestBuilder;
-use AfSergiu\ApiInvoker\Http\Constructors\JsonApiRequestConstructor;
+use AfSergiu\ApiInvoker\Http\Constructors\RequestConstructor;
 
 class JsonApiMethodFactory extends ApiMethodFactory
 {
     protected function createApiRequestConstructor(): IRequestConstructor
     {
-        return new JsonApiRequestConstructor(
+        return new RequestConstructor(
             new JsonRequestBuilder()
         );
     }
