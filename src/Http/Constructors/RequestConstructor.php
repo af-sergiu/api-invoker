@@ -11,7 +11,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use Psr\Http\Message\RequestInterface;
 
-class RequestConstructor implements IRequestConstructor
+final class RequestConstructor implements IRequestConstructor
 {
     /**
      * @var BaseRequestBuilder
