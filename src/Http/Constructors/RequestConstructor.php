@@ -38,9 +38,8 @@ final class RequestConstructor implements IRequestConstructor
             $this->setParametersForGetMethod($parameters);
         } else if ($method !== 'GET' && is_array($parameters)) {
             $this->setParametersBody($parameters);
-            $this->builder->setBodyParameters($parameters);
         } else if ($method !== 'GET' && is_string($parameters)) {
-            $this->builder->setBody($parameters);
+            $this->setParametersBody($parameters);
         }
     }
 
