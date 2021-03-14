@@ -13,15 +13,8 @@ interface IApiMethod
 
     /**
      * Change default request builder
-     * @param IRequestBuilder $requestBuilder
+     * @param IRequestBuilder|array|string $parameters
      * @return mixed
      */
-    public function setRequestBuilder(IRequestBuilder $requestBuilder);
-
-    /**
-     * Set request parameters
-     * @param array $parameters
-     * @return mixed
-     */
-    public function setRequestParameters(array $parameters);
+    public function setParameters($parameters);
 }

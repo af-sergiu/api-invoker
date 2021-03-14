@@ -21,32 +21,4 @@ class DemoBaseApiMethod extends BaseApiMethod
      * @var string
      */
     protected $uri = 'https://httpbin.org/get';
-    /**
-     * @var array
-     */
-    protected $parameters = [];
-    /**
-     * @var RequestConstructor
-     */
-    protected $requestConstructor;
-
-    public function __construct(
-        RequestConstructor $requestConstructor,
-        IRequestInvoker $requestInvoker,
-        IBeforeMiddlewareInvoker $beforeMiddlewareInvoker,
-        IAfterMiddlewareInvoker $afterMiddlewareInvoker
-    ) {
-        parent::__construct($requestConstructor, $requestInvoker, $beforeMiddlewareInvoker, $afterMiddlewareInvoker);
-    }
-
-    /**
-     * @param array $parameters
-     * @return mixed|void
-     */
-    public function setRequestParameters(array $parameters)
-    {
-        /** @var \DateTime $datetime */
-        $datetime = $parameters['datetime'];
-        $this->parameters['date'] = $datetime->format('D.M.Y');
-    }
 }

@@ -3,12 +3,12 @@
 namespace AfSergiu\ApiInvoker\Http\ApiMethods;
 
 use AfSergiu\ApiInvoker\Contracts\Http\IApiMethod;
-use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
+use AfSergiu\ApiInvoker\Contracts\IArrayStructureBuilder;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -25,23 +25,19 @@ abstract class BaseApiMethod implements IApiMethod
     /**
      * @var array
      */
-    protected $parameters = [];
-    /**
-     * @var array
-     */
     protected $beforeMiddleware = [];
     /**
      * @var array
      */
     protected $afterMiddleware = [];
     /**
+     * @var mixed
+     */
+    private $parameters = '';
+    /**
      * @var IRequestConstructor
      */
-    protected $requestConstructor;
-    /**
-     * @var IRequestBuilder
-     */
-    protected $requestBuilder;
+    private $requestConstructor;
     /**
      * @var RequestInterface
      */
@@ -75,11 +71,20 @@ abstract class BaseApiMethod implements IApiMethod
         $this->afterMiddlewareInvoker = $afterMiddlewareInvoker;
     }
 
+    final public function setParameters($parameters)
+    {
+        if ($parameters instanceof IArrayStructureBuilder) {
+            $this->parameters = $parameters->build();
+        } else {
+            $this->parameters = $parameters;
+        }
+    }
+
     /**
      * @param IResponseReader $responseReader
      * @return mixed
      */
-    public function call(IResponseReader $responseReader)
+    final public function call(IResponseReader $responseReader)
     {
         $this->request = $this->createRequest();
         $this->invokeBeforeMiddleware();
@@ -90,11 +95,11 @@ abstract class BaseApiMethod implements IApiMethod
 
     protected function createRequest(): RequestInterface
     {
-        if ($this->requestBuilder) {
-            return $this->requestConstructor->create($this->requestBuilder);
-        } else {
-            return $this->requestConstructor->createByDefaultBuilder($this->uri, $this->parameters, $this->httpMethod);
-        }
+        return $this->requestConstructor->create(
+            $this->httpMethod,
+            $this->uri,
+            $this->parameters
+        );
     }
 
     private function invokeBeforeMiddleware(): void
@@ -122,15 +127,5 @@ abstract class BaseApiMethod implements IApiMethod
     private function readRequest(IResponseReader $responseReader)
     {
         $responseReader->read($this->response);
-    }
-
-    public function setRequestBuilder(IRequestBuilder $requestBuilder)
-    {
-        $this->requestBuilder = $requestBuilder;
-    }
-
-    public function setRequestParameters(array $parameters)
-    {
-        $this->parameters = $parameters;
     }
 }
