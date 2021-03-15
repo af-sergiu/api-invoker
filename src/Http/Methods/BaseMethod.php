@@ -71,13 +71,14 @@ abstract class BaseMethod implements IMethod
         $this->afterMiddlewareInvoker = $afterMiddlewareInvoker;
     }
 
-    final public function setParameters($parameters)
+    final public function setParameters($parameters): IMethod
     {
         if ($parameters instanceof IArrayStructureBuilder) {
             $this->parameters = $parameters->build();
         } else {
             $this->parameters = $parameters;
         }
+        return $this;
     }
 
     /**
