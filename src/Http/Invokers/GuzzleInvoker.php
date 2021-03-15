@@ -22,6 +22,6 @@ final class GuzzleInvoker extends BaseRequestInvoker
 
     protected function sendRequest(RequestInterface $request): ResponseInterface
     {
-        return $this->httpClient->sendRequest($request);
+        return $this->httpClient->sendRequest($request, ['http_errors' => true]);
     }
 }
