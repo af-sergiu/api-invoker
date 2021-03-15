@@ -2,7 +2,7 @@
 
 namespace AfSergiu\ApiInvoker\Contracts\Http;
 
-interface IApiMethod
+interface IMethod
 {
     /**
      * Call and read request

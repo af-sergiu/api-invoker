@@ -8,7 +8,7 @@ use AfSergiu\ApiInvoker\Http\Builders\JsonRequestBuilder;
 use AfSergiu\ApiInvoker\Http\Invokers\GuzzleInvoker;
 use GuzzleHttp\Client;
 
-class JsonApiMethodFactory extends ApiMethodFactory
+class JsonApiMethodFactory extends MethodFactory
 {
     function createRequestBuilder(): IRequestBuilder
     {

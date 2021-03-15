@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AfSergiu\ApiInvoker\Http\ApiMethods;
+namespace AfSergiu\ApiInvoker\Http\Methods;
 
-use AfSergiu\ApiInvoker\Contracts\Http\IApiMethod;
+use AfSergiu\ApiInvoker\Contracts\Http\IMethod;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
@@ -12,7 +12,7 @@ use AfSergiu\ApiInvoker\Contracts\IArrayStructureBuilder;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class BaseApiMethod implements IApiMethod
+abstract class BaseMethod implements IMethod
 {
     /**
      * @var string
