@@ -34,11 +34,10 @@ abstract class BaseRequestInvoker implements IRequestInvoker
      * @throws \Throwable
      * @param RequestInterface $request
      */
-    public function invoke(RequestInterface $request): IRequestInvoker
+    public function invoke(RequestInterface $request): ResponseInterface
     {
         try {
-            $this->response = $this->sendRequest($request);
-            return $this;
+            return $this->response = $this->sendRequest($request);
         } catch (\Throwable $e) {
             throw $this->exceptionsAdapter->adapt($e);
         }

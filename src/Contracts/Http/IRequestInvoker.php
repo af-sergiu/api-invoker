@@ -13,9 +13,9 @@ interface IRequestInvoker
     /**
      * Вызывает запрос
      * @param RequestInterface $request
-     * @return IRequestInvoker
+     * @return ResponseInterface
      */
-    public function invoke(RequestInterface $request): IRequestInvoker;
+    public function invoke(RequestInterface $request): ResponseInterface;
 
     /**
      * Читает ответ на запрос

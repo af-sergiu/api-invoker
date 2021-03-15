@@ -89,6 +89,11 @@ abstract class BaseMethod implements IMethod
 
     /**
      * @param IResponseReader $responseReader
+     * @return mixed|void
+     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ClientException
+     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\NetworkException
+     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ServerException
+     * @throws \Throwable
      * @return mixed
      */
     final public function call(IResponseReader $responseReader)
@@ -106,7 +111,7 @@ abstract class BaseMethod implements IMethod
             $this->httpMethod,
             $this->uri,
             $this->parameters,
-            $this->headers
+            $this->addHeaders
         );
     }
 
@@ -116,6 +121,13 @@ abstract class BaseMethod implements IMethod
         $this->beforeMiddlewareInvoker->invokeChain($this->request);
     }
 
+    /**
+     * @return ResponseInterface
+     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ClientException
+     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\NetworkException
+     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ServerException
+     * @throws \Throwable
+     */
     private function callRequest(): ResponseInterface
     {
         return $this->requestInvoker->invoke($this->request);
@@ -132,8 +144,12 @@ abstract class BaseMethod implements IMethod
         return [];
     }
 
+    /**
+     * @param IResponseReader $responseReader
+     * @return mixed
+     */
     private function readRequest(IResponseReader $responseReader)
     {
-        $responseReader->read($this->response);
+        return $responseReader->read($this->response);
     }
 }
