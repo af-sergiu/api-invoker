@@ -12,7 +12,7 @@ use GuzzleHttp\Exception\TooManyRedirectsException;
 use AfSergiu\ApiInvoker\Http\Exceptions\ServerException;
 use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
 
-class GuzzleExceptionsAdapter implements IExceptionsAdapter
+final class GuzzleExceptionsAdapter implements IExceptionsAdapter
 {
     /**
      * @param \Throwable $exception
