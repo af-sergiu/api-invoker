@@ -11,6 +11,8 @@ use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\IArrayStructureBuilder;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddleware;
+use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddleware;
 
 abstract class BaseMethod implements IMethod
 {
@@ -25,9 +27,13 @@ abstract class BaseMethod implements IMethod
     /**
      * @var array
      */
+    protected $addHeaders=[];
+    /**
+     * @var array<\Closure|IBeforeMiddleware>
+     */
     protected $beforeMiddleware = [];
     /**
-     * @var array
+     * @var array<\Closure|IAfterMiddleware>
      */
     protected $afterMiddleware = [];
     /**
@@ -99,7 +105,8 @@ abstract class BaseMethod implements IMethod
         return $this->requestConstructor->create(
             $this->httpMethod,
             $this->uri,
-            $this->parameters
+            $this->parameters,
+            $this->headers
         );
     }
 
