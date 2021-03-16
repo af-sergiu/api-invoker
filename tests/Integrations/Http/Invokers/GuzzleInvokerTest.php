@@ -44,7 +44,7 @@ class GuzzleInvokerTest extends TestCase
     {
         $this->expectException(ServerException::class);
 
-        $mockHandler = new MockHandler([new Response(500), Middleware::httpErrors()]);
+        $mockHandler = new MockHandler([new Response(500)]);
         $client = $this->createGuzzleClient($mockHandler);
         $invoker = $this->createGuzzleInvoker($client, $this->exceptionAdapter);
 
