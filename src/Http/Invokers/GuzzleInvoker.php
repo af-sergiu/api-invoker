@@ -3,18 +3,18 @@
 namespace AfSergiu\ApiInvoker\Http\Invokers;
 
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
-use GuzzleHttp\Client;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class GuzzleInvoker extends BaseRequestInvoker
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $httpClient;
 
-    public function __construct(Client $httpClient, IExceptionsAdapter $exceptionsAdapter)
+    public function __construct(ClientInterface $httpClient, IExceptionsAdapter $exceptionsAdapter)
     {
         parent::__construct($exceptionsAdapter);
         $this->httpClient = $httpClient;
@@ -22,6 +22,11 @@ final class GuzzleInvoker extends BaseRequestInvoker
 
     protected function sendRequest(RequestInterface $request): ResponseInterface
     {
-        return $this->httpClient->sendRequest($request, ['http_errors' => true]);
+        return $this->httpClient->sendRequest($request);
+    }
+
+    private function getThrowHttpErrorsConfig(): array
+    {
+        return ['http_errors' => true];
     }
 }

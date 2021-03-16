@@ -4,7 +4,6 @@ namespace AfSergiu\ApiInvoker\Http\Invokers;
 
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
-use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
