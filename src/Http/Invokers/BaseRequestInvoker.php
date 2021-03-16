@@ -48,16 +48,4 @@ abstract class BaseRequestInvoker implements IRequestInvoker
      * @return ResponseInterface
      */
     abstract protected function sendRequest(RequestInterface $request): ResponseInterface;
-
-    /**
-     * @throws \RuntimeException
-     */
-    public function read(IResponseReader $reader)
-    {
-        if ($this->response instanceof ResponseInterface) {
-            return $reader->read($this->response);
-        } else {
-            throw new \RuntimeException('Request was not invoked');
-        }
-    }
 }
