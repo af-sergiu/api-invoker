@@ -24,9 +24,4 @@ final class GuzzleInvoker extends BaseRequestInvoker
     {
         return $this->httpClient->sendRequest($request);
     }
-
-    private function getThrowHttpErrorsConfig(): array
-    {
-        return ['http_errors' => true];
-    }
 }
