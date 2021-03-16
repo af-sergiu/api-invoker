@@ -287,4 +287,22 @@ class BaseMethodTest extends TestCase
         $apiMethod->setParameters([]);
         $apiMethod->call($this->responseReaderMock);
     }
+
+    public function testResponseWasRead(): void
+    {
+        $this->responseReaderMock->expects($this->once())
+            ->method('read')
+            ->with(
+                $this->equalTo($this->responseMock)
+            );
+        $apiMethod = $this->getApiMethodMock(
+            $this->requestContructorMock,
+            $this->requestInvokerMock,
+            $this->beforeMiddlewareInvokerMock,
+            $this->afterMiddlewareInvokerMock
+        );
+
+        $apiMethod->setParameters([]);
+        $apiMethod->call($this->responseReaderMock);
+    }
 }
