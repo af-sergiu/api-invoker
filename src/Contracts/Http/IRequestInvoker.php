@@ -16,11 +16,4 @@ interface IRequestInvoker
      * @return ResponseInterface
      */
     public function invoke(RequestInterface $request): ResponseInterface;
-
-    /**
-     * Читает ответ на запрос
-     * @param IResponseReader $reader
-     * @return mixed
-     */
-    public function read(IResponseReader $reader);
 }

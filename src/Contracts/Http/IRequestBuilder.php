@@ -29,7 +29,7 @@ interface IRequestBuilder
      * @param array $headers
      * @return mixed
      */
-    public function setHeaders(array $headers);
+    public function setHeaders(array $addHeaders);
 
     /**
      * Set body request
@@ -37,6 +37,20 @@ interface IRequestBuilder
      * @return mixed
      */
     public function setBody(string $parameters);
+
+    /**
+     * Set converted to string array parameters in api defined format (json, xml etc) to body
+     * @param array $parameters
+     * @return mixed
+     */
+    public function setBodyParameters(array $parameters);
+
+    /**
+     * Set converted to string array parameters for GET requests
+     * @param array $parameters
+     * @return mixed
+     */
+    public function setUriParameters(array $parameters);
 
     /**
      * Get result request

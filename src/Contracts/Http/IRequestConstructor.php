@@ -11,19 +11,21 @@ use Psr\Http\Message\RequestInterface;
 
 interface IRequestConstructor
 {
+
     /**
-     * Управляет строительством запроса
-     * @param IRequestBuilder $requestBuilder
-     * @return RequestInterface
+     * Устанавливает билдер, который будет конструировать запрос
+     * @param IRequestBuilder $builder
+     * @return void
      */
-    public function create(IRequestBuilder $requestBuilder): RequestInterface;
+    public function setBuilder(IRequestBuilder $builder): void;
 
     /**
      * Конструирует запрос с помощью билдера по умолчанию, чтобы не создавать большое кол-во классов для простых запросов
-     * @param string $uri
-     * @param array $parameters
      * @param string $method
+     * @param string $uri
+     * @param array|string $parameters
+     * @param array $addHeaders
      * @return RequestInterface
      */
-    public function createByDefaultBuilder(string $uri, array $parameters=[], string $method='GET'): RequestInterface;
+    public function create(string $method='GET', string $uri, $parameters, array $addHeaders=[]): RequestInterface;
 }

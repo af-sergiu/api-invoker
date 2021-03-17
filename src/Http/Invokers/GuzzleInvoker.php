@@ -2,46 +2,36 @@
 
 namespace AfSergiu\ApiInvoker\Http\Invokers;
 
-use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
-use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
+use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use GuzzleHttp\Client;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class GuzzleInvoker implements IRequestInvoker
+final class GuzzleInvoker extends BaseRequestInvoker
 {
     /**
      * @var Client
      */
     private $httpClient;
 
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
-
-    public function __construct(Client $httpClient)
+    public function __construct(Client $httpClient, IExceptionsAdapter $exceptionsAdapter)
     {
+        parent::__construct($exceptionsAdapter);
         $this->httpClient = $httpClient;
     }
 
-    /**
-     * @throws \Psr\Http\Client\ClientExceptionInterface
-     */
-    public function invoke(RequestInterface $request)
+    protected function sendRequest(RequestInterface $request): ResponseInterface
     {
-        $this->response = $this->httpClient->sendRequest($request);
+        return $this->httpClient->send($request, $this->getGuzzleRequestConfig());
     }
 
-    /**
-     * @throws \RuntimeException
-     */
-    public function read(IResponseReader $reader)
+    private function getGuzzleRequestConfig(): array
     {
-        if ($this->response instanceof ResponseInterface) {
-            return $reader->read($this->response);
-        } else {
-            throw new \RuntimeException('Request was not invoked');
-        }
+        return array_merge([], $this->getThrowHttpErrorsConfig());
+    }
+
+    private function getThrowHttpErrorsConfig(): array
+    {
+        return ['http_errors' => true];
     }
 }

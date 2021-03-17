@@ -6,7 +6,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IMiddlewareChainBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class MiddlewareChainBuilder implements IMiddlewareChainBuilder
+final class MiddlewareChainBuilder implements IMiddlewareChainBuilder
 {
     /**
      * @var ContainerInterface

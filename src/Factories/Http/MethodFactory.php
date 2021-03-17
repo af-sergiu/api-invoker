@@ -2,21 +2,21 @@
 
 namespace AfSergiu\ApiInvoker\Factories\Http;
 
-use AfSergiu\ApiInvoker\Contracts\Factories\Http\IApiMethodFactory;
-use AfSergiu\ApiInvoker\Contracts\Http\IApiMethod;
+use AfSergiu\ApiInvoker\Contracts\Factories\Http\IMethodFactory;
+use AfSergiu\ApiInvoker\Contracts\Http\IMethod;
+use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IMiddlewareChainBuilder;
-use AfSergiu\ApiInvoker\Http\Invokers\GuzzleInvoker;
+use AfSergiu\ApiInvoker\Http\Constructors\RequestConstructor;
 use AfSergiu\ApiInvoker\Http\Middleware\AfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Http\Middleware\BeforeMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Http\Middleware\MiddlewareChainBuilder;
-use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
-abstract class ApiMethodFactory implements IApiMethodFactory
+abstract class MethodFactory implements IMethodFactory
 {
     /**
      * @var ContainerInterface
@@ -28,7 +28,7 @@ abstract class ApiMethodFactory implements IApiMethodFactory
         $this->container = $container;
     }
 
-    public function create(string $className): IApiMethod
+    public function create(string $className): IMethod
     {
         return new $className(
             $this->createApiRequestConstructor(),
@@ -38,12 +38,18 @@ abstract class ApiMethodFactory implements IApiMethodFactory
         );
     }
 
-    abstract protected function createApiRequestConstructor(): IRequestConstructor;
-
-    private function createApiInvoker(): IRequestInvoker
+    private function createApiRequestConstructor(): IRequestConstructor
     {
-        return new GuzzleInvoker(new Client());
+        $requestConstructor = new RequestConstructor();
+        $requestConstructor->setBuilder(
+            $this->createRequestBuilder()
+        );
+        return $requestConstructor;
     }
+
+    abstract function createRequestBuilder(): IRequestBuilder;
+
+    abstract protected function createApiInvoker(): IRequestInvoker;
 
     private function createBeforeMiddlewareInvoker(): IBeforeMiddlewareInvoker
     {

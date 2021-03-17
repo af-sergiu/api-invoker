@@ -1,101 +1,22 @@
 # api-invoker
-Library for invoke api requests
+Каркас для организации работы со сложными api. 
 
-## Usage
-Для организации работы с api нам необходиом создать конструктор запросов `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor`, необходимые нам методы api `AfSergiu\ApiInvoker\Contracts\Http\IResponseReader` и ридеры к ним `AfSergiu\ApiInvoker\Contracts\Http\IResponseReader`.
+## Использование
+### Определение работы с api
+В определении порядка работы с api участвуют 2, в редком случае 4 типажа. Это:
+* `AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder` служит для конструирования класса запроса характерного для всех методов api. Он устанавливает токены, порядок сериализации массивов параметров в json, xml и тп, обязательные заголовки запросов.    Для создания нового строителя можно наследовать базовый абстрактный класс `AfSergiu\ApiInvoker\Http\Builders\BaseRequestBuilder`;
+    
+* `AfSergiu\ApiInvoker\Contracts\Factories\Http\IMethodFactory` фабрику для методов api, которая устанавливает необходимые зависимости для методов данного api: строитель запросов, инвокер запросов и т.п. Для создания фабрики можно наследовать базовую абстрактную фабрику `AfSergiu\ApiInvoker\Factories\Http\MethodFactory`, которая реализовывает поставку всех зависимостей, относящихся к общей работе пакета, кроме строителя запроса и инвокера запроса. В пакете реализован готовый инвокер на базе Guzzle, который можно использовать. Для ее создания необходимо воспользоваться фабрикой `AfSergiu\ApiInvoker\Factories\Http\Invokers\GuzzleInvokerFactory`. В конструктор `AfSergiu\ApiInvoker\Factories\Http\MethodFactory::__construct(ContainerInterface $container)` необходимо передать контейнер для поставки миддлваров; 
 
-Конструктор запросов, отвечает за управление конструированием запроса api, вызывая методы билдера, он устанавливает параметры, характерные для всех запросов к api: http-аутентификацию, заголовки, порядок установки параметров в тело запроса (xml, json и т.п.). Конструктор должен реализовывать интерфейс `AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor`.
-
-Конструктор должен реализовывать два метода:
- * `create(Psr\Http\Message\RequestInterface\IRequestBuilder $requestBuilder): Psr\Http\Message\RequestInterface` - создает запрос с помощью конкретного билдера запроса, где билдер содержит уже установленный uri, метод запроса и параметры запроса. Конструктор только установливает базовые параметры, указанные выше;
- * `сreateByDefaultBuilder(string $uri, array $parameters=[], string $method='GET'): Psr\Http\Message\RequestInterface` - создает запрос с помощью базового билдера `AfSergiu\ApiInvoker\Http\Builders\BaseRequestBuilder`, где uri метод запроса и параметры передаются, как аргументы. Если запрос использует подпись, то она формируется в этом методе
+* При необходимости можно переопределить дефолтный инвокер запросов - типаж `AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker`. Это может потребоваться для реализации иной стратегии отправки http запроса к api, например, с использованием ssl сертификата. Для создания инвокера следует наследовать базовый абстрактный класс `AfSergiu\ApiInvoker\Http\Invokers\BaseRequestInvoker`. Дефолтный инвокер использует библиотеку Guzzle, если вы будете использовать другой http клиент, то для него необходимо определить свой адаптер исключений.
+### Определение методов api
+ Каждый метод api определяется в классе, наследующем `AfSergiu\ApiInvoker\Http\Methods\BaseMethod`, где необходимо реализовать следующие свойства:
+ * `$httpMethod` - http метода запроса
+ * `$uri` - uri запроса
+ * `$addHeaders` - массив заголовков, которые будут замерджины к заголовкам, определенным в билдере запроса данного api, если в api принято в заголовках передавать какие то параметры  
+ * `$beforeMiddleware` массив мидлваров, которые будут вызваны перед выполнением запроса
+ * `$afterMiddleware` массив мидлваров, которые будут вызваны после выполнения запроса
+ ### Определение мидлваров
+ Перед и после выполнения запроса вызываются миддлвары. Они указываются в массивах `AfSergiu\ApiInvoker\Http\Methods\BaseMethod`. Мидлвары могут определены в виде функции или строки с наименованием класса, реализующим интерфейсы `AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddleware` и `AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddleware`.
  
- 
- 
-#### Define constructor for your API
-    
-    <?php
-    
-    use AfSergiu\ApiInvoker\Contracts\Http\IRequestConstructor;
-    
-    class ConceteApiRequestConstructor implements IRequestConstructor
-    {
-        /**
-         * @var DefaultRequestBuilder 
-         */
-        private $defaultBuilder;
-        
-        public function __construct(DefaultRequestBuilder $requestBuilder)
-        {
-            $this->defaultBuilder = $defaultBuilder;
-        }
-        
-        public function create(IRequestBuilder $requestBuilder): RequestInterface
-        {
-            $requestBuilder->setHeaders($this->getMustHaveHeaders());
-            return $requestBuilder->getResult();
-        }
-        
-        public function createByDefaultBuilder(
-            string $uri, 
-            array $parameters=[], 
-            string $method='GET'
-        ): RequestInterface {
-            $this->defaultBuilder->setMethod($method);
-            $this->defaultBuilder->defaultBuilder->setUri($uri);
-            $this->defaultBuilder->setParameters($this->$parameters());
-            $this->defaultBuilder->setHeaders($this->getMustHaveHeaders());
-            return $requestBuilder->getResult();
-        }
-    }
-#### Define concrete API method
-##### Simple api method, which contains api parameters, without special builder
-    <?php
-    
-    use AfSergiu\ApiInvoker\Http\ApiMethods\BaseApiMethod;
-    use YourNamespace/functionName1;
-    use YourNamespace/functionName2;
-    
-    class ConcreteSimpleApiMethod extends BaseApiMethod
-    {
-        protected $httpMethod = 'POST';
-        protected $uri = 'https://your.api/method';
-        protected $beforeMiddleware = [
-            MiddlwareHandler::class,
-            'functionName1'
-        ];
-        protected $afterMiddleware = [
-            MiddlwareHandler1::class,
-            'functionName2'
-        ];
-        protected $parameters = [];
-        
-        protected function setRequestParameters(array $parameters)
-        {
-            $this->parameters = [
-                'apiParameter1' => $this->prepareParameter(
-                    $parameters['apiParameter1']
-                ),
-                'apiParameter2' => $this->prepareParameter(
-                    $parameters['apiParameter2']
-                )
-            ];
-        }
-    }
-    
-##### Api-method, which has very complicated request parameters and must have a request builder
-    <?php
-    
-    use AfSergiu\ApiInvoker\Contracts\Http\IRequestBuilder;
-    
-    class ConcreteRequestBuilder implements IRequestBuilder
-    {   
-        public function setParameters(array $parameters)
-        {
-            $this->body = json_encode($parameters);
-        }
-    }
-     
-
-## Cook book
 
