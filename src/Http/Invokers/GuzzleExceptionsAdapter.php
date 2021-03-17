@@ -4,14 +4,14 @@ namespace AfSergiu\ApiInvoker\Http\Invokers;
 
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use AfSergiu\ApiInvoker\Contracts\Exceptions\RequestException;
-use AfSergiu\ApiInvoker\Http\Exceptions\NetworkException;
-use AfSergiu\ApiInvoker\Http\Exceptions\ServerAccessException;
+use AfSergiu\ApiInvoker\Exceptions\NetworkException;
+use AfSergiu\ApiInvoker\Exceptions\ServerAccessException;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\ConnectException as GuzzleConnectException;
 use GuzzleHttp\Exception\ServerException as GuzzleServerException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
-use AfSergiu\ApiInvoker\Http\Exceptions\ServerException;
-use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
+use AfSergiu\ApiInvoker\Exceptions\ServerException;
+use AfSergiu\ApiInvoker\Exceptions\ClientException;
 
 final class GuzzleExceptionsAdapter implements IExceptionsAdapter
 {

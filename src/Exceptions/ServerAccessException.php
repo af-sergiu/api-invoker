@@ -4,7 +4,7 @@
  * Ошибки, имеющие http код 401, 403, 407
  */
 
-namespace AfSergiu\ApiInvoker\Http\Exceptions;
+namespace AfSergiu\ApiInvoker\Exceptions;
 
 class ServerAccessException extends ClientException
 {

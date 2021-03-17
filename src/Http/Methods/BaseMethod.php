@@ -90,9 +90,9 @@ abstract class BaseMethod implements IMethod
     /**
      * @param IResponseReader $responseReader
      * @return mixed|void
-     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ClientException
-     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\NetworkException
-     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ServerException
+     * @throws \AfSergiu\ApiInvoker\Exceptions\ClientException
+     * @throws \AfSergiu\ApiInvoker\Exceptions\NetworkException
+     * @throws \AfSergiu\ApiInvoker\Exceptions\ServerException
      * @throws \Throwable
      * @return mixed
      */
@@ -123,9 +123,9 @@ abstract class BaseMethod implements IMethod
 
     /**
      * @return ResponseInterface
-     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ClientException
-     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\NetworkException
-     * @throws \AfSergiu\ApiInvoker\Http\Exceptions\ServerException
+     * @throws \AfSergiu\ApiInvoker\Exceptions\ClientException
+     * @throws \AfSergiu\ApiInvoker\Exceptions\NetworkException
+     * @throws \AfSergiu\ApiInvoker\Exceptions\ServerException
      * @throws \Throwable
      */
     private function callRequest(): ResponseInterface

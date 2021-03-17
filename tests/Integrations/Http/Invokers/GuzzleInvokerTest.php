@@ -10,10 +10,10 @@ namespace AfSergiu\ApiInvoker\Tests\Integrations\Http\Invokers;
 
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
-use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
-use AfSergiu\ApiInvoker\Http\Exceptions\NetworkException;
-use AfSergiu\ApiInvoker\Http\Exceptions\ServerAccessException;
-use AfSergiu\ApiInvoker\Http\Exceptions\ServerException;
+use AfSergiu\ApiInvoker\Exceptions\ClientException;
+use AfSergiu\ApiInvoker\Exceptions\NetworkException;
+use AfSergiu\ApiInvoker\Exceptions\ServerAccessException;
+use AfSergiu\ApiInvoker\Exceptions\ServerException;
 use AfSergiu\ApiInvoker\Http\Invokers\GuzzleExceptionsAdapter;
 use AfSergiu\ApiInvoker\Http\Invokers\GuzzleInvoker;
 use GuzzleHttp\Client;

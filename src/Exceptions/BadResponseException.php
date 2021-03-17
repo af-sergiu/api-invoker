@@ -4,7 +4,7 @@
  * Ошибка запроса, содержащая ответ от сервера
  */
 
-namespace AfSergiu\ApiInvoker\Http\Exceptions;
+namespace AfSergiu\ApiInvoker\Exceptions;
 
 use AfSergiu\ApiInvoker\Contracts\Exceptions\RequestException;
 use Psr\Http\Message\ResponseInterface;

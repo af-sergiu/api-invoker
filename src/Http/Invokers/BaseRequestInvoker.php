@@ -6,9 +6,9 @@ use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
-use AfSergiu\ApiInvoker\Http\Exceptions\NetworkException;
-use AfSergiu\ApiInvoker\Http\Exceptions\ServerException;
+use AfSergiu\ApiInvoker\Exceptions\ClientException;
+use AfSergiu\ApiInvoker\Exceptions\NetworkException;
+use AfSergiu\ApiInvoker\Exceptions\ServerException;
 
 abstract class BaseRequestInvoker implements IRequestInvoker
 {

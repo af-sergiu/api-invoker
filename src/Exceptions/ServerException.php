@@ -4,7 +4,7 @@
  * Ошибки, имеющие http код 5**
  */
 
-namespace AfSergiu\ApiInvoker\Http\Exceptions;
+namespace AfSergiu\ApiInvoker\Exceptions;
 
 class ServerException extends BadResponseException
 {
