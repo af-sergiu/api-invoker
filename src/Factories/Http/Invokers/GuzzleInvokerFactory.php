@@ -27,12 +27,7 @@ class GuzzleInvokerFactory implements IInvokerFactory
 
     private function getGuzzleConfig(): array
     {
-        return array_merge([], $this->getThrowHttpErrorsConfig());
-    }
-
-    private function getThrowHttpErrorsConfig(): array
-    {
-        return ['http_errors' => true];
+        return [];
     }
 
     private function getExceptionAdapter(): IExceptionsAdapter
