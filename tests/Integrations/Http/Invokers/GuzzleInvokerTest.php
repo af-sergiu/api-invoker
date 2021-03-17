@@ -11,11 +11,13 @@ namespace AfSergiu\ApiInvoker\Tests\Integrations\Http\Invokers;
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
 use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
+use AfSergiu\ApiInvoker\Http\Exceptions\NetworkException;
 use AfSergiu\ApiInvoker\Http\Exceptions\ServerAccessException;
 use AfSergiu\ApiInvoker\Http\Exceptions\ServerException;
 use AfSergiu\ApiInvoker\Http\Invokers\GuzzleExceptionsAdapter;
 use AfSergiu\ApiInvoker\Http\Invokers\GuzzleInvoker;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -115,6 +117,19 @@ class GuzzleInvokerTest extends TestCase
         $this->expectException(ServerAccessException::class);
 
         $handlerStack = $this->getStackHandler([new Response(407, [], 'body')]);
+        $client = $this->createGuzzleClient($handlerStack);
+        $invoker = $this->createGuzzleInvoker($client, $this->exceptionAdapter);
+
+        $invoker->invoke($this->request);
+    }
+
+    public function testNetworkExceptionThrowByDisconnect(): void
+    {
+        $this->expectException(NetworkException::class);
+
+        $handlerStack = $this->getStackHandler([
+            new ConnectException("Disconnect!", new Request('GET', 'uri'))
+        ]);
         $client = $this->createGuzzleClient($handlerStack);
         $invoker = $this->createGuzzleInvoker($client, $this->exceptionAdapter);
 
