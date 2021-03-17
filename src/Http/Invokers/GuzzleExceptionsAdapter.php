@@ -5,6 +5,7 @@ namespace AfSergiu\ApiInvoker\Http\Invokers;
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
 use AfSergiu\ApiInvoker\Contracts\Exceptions\RequestException;
 use AfSergiu\ApiInvoker\Http\Exceptions\NetworkException;
+use AfSergiu\ApiInvoker\Http\Exceptions\ServerAccessException;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use GuzzleHttp\Exception\ConnectException as GuzzleConnectException;
 use GuzzleHttp\Exception\ServerException as GuzzleServerException;
@@ -15,6 +16,11 @@ use AfSergiu\ApiInvoker\Http\Exceptions\ClientException;
 final class GuzzleExceptionsAdapter implements IExceptionsAdapter
 {
     /**
+     * @var array
+     */
+    const SERVER_ACCESS_ERROR_CODES = [401, 403, 407];
+
+    /**
      * @param \Throwable $exception
      * @return \Throwable
      */
@@ -24,7 +30,7 @@ final class GuzzleExceptionsAdapter implements IExceptionsAdapter
             $newException = new ServerException();
             $newException->setResponse($exception->getResponse());
         } else if ($exception instanceof GuzzleClientException) {
-            $newException = new ClientException();
+            $newException = $this->resolveClientException($exception);
             $newException->setResponse($exception->getResponse());
         } else if ($exception instanceof GuzzleConnectException) {
             $newException = new NetworkException();
@@ -36,5 +42,15 @@ final class GuzzleExceptionsAdapter implements IExceptionsAdapter
             $newException = $exception;
         }
         return $newException;
+    }
+
+    private function resolveClientException(GuzzleClientException $exception): ClientException
+    {
+        $statusCode = $exception->getCode();
+        if (in_array($statusCode, self::SERVER_ACCESS_ERROR_CODES)) {
+            return new ServerAccessException();
+        } else {
+            return new ClientException();
+        }
     }
 }
