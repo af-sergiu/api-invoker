@@ -11,7 +11,7 @@ use GuzzleHttp\Client;
 
 class JsonApiMethodFactory extends MethodFactory
 {
-    function createRequestBuilder(): IRequestBuilder
+    protected function createRequestBuilder(): IRequestBuilder
     {
         return new JsonRequestBuilder();
     }

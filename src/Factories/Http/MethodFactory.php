@@ -47,7 +47,7 @@ abstract class MethodFactory implements IMethodFactory
         return $requestConstructor;
     }
 
-    abstract function createRequestBuilder(): IRequestBuilder;
+    abstract protected function createRequestBuilder(): IRequestBuilder;
 
     abstract protected function createApiInvoker(): IRequestInvoker;
 
