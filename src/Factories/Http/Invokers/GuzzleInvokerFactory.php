@@ -20,7 +20,7 @@ class GuzzleInvokerFactory implements IInvokerFactory
         );
     }
 
-    private function getGuzzleClient(): ClientInterface
+    private function getGuzzleClient(): Client
     {
         return new Client($this->getGuzzleConfig());
     }

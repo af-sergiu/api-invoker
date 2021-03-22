@@ -3,7 +3,7 @@
 namespace AfSergiu\ApiInvoker\Http\Invokers;
 
 use AfSergiu\ApiInvoker\Contracts\Exceptions\IExceptionsAdapter;
-use AfSergiu\ApiInvoker\Contracts\Exceptions\RequestException;
+use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use AfSergiu\ApiInvoker\Exceptions\NetworkException;
 use AfSergiu\ApiInvoker\Exceptions\ServerAccessException;
 use GuzzleHttp\Exception\ClientException as GuzzleClientException;
@@ -36,7 +36,7 @@ final class GuzzleExceptionsAdapter implements IExceptionsAdapter
             $newException = new NetworkException();
         } else if ($exception instanceof TooManyRedirectsException) {
             $newException = new ServerException();
-        } else if ($exception instanceof RequestException) {
+        } else if ($exception instanceof GuzzleRequestException) {
             $newException = new NetworkException();
         } else {
             $newException = $exception;
