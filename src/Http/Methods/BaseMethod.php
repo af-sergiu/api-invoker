@@ -39,11 +39,11 @@ abstract class BaseMethod implements IMethod
     /**
      * @var mixed
      */
-    private $parameters = '';
+    protected $parameters;
     /**
      * @var IRequestConstructor
      */
-    private $requestConstructor;
+    protected $requestConstructor;
     /**
      * @var RequestInterface
      */
