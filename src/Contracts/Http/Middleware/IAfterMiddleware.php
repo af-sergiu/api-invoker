@@ -9,10 +9,10 @@ interface IAfterMiddleware
 {
     /**
      * Выполняет основной функционал обработки
-     * @param RequestInterface $request
      * @param ResponseInterface $response
+     * @param RequestInterface $request
      * @param \Closure $next
      * @return ResponseInterface
      */
-    public function handle(RequestInterface $request, ResponseInterface $response, \Closure $next): ResponseInterface;
+    public function handle(ResponseInterface $response, RequestInterface $request, \Closure $next): ResponseInterface;
 }
