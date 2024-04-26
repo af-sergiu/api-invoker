@@ -26,6 +26,9 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * @covers GuzzleInvoker
+ */
 class GuzzleInvokerTest extends TestCase
 {
     /**

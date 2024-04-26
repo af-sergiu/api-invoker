@@ -14,6 +14,9 @@ use AfSergiu\ApiInvoker\Http\Constructors\RequestConstructor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers RequestConstructor
+ */
 class RequestConstructorTest extends TestCase
 {
     public function testBuildedRequestHasCorrectHttpMethod(): void

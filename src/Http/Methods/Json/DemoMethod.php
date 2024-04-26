@@ -4,21 +4,18 @@
  * Example of concrete API method
  */
 
-namespace AfSergiu\ApiInvoker\Http\Methods;
+namespace AfSergiu\ApiInvoker\Http\Methods\Json;
 
-use AfSergiu\ApiInvoker\Contracts\Http\IRequestInvoker;
-use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
-use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
-use AfSergiu\ApiInvoker\Http\Constructors\RequestConstructor;
+use AfSergiu\ApiInvoker\Http\Methods\BaseMethod;
 
 class DemoMethod extends BaseMethod
 {
     /**
      * @var string
      */
-    protected $httpMethod = 'GET';
+    protected string $httpMethod = 'GET';
     /**
      * @var string
      */
-    protected $uri = 'https://httpbin.org/get';
+    protected string $uri = 'https://httpbin.org/get';
 }

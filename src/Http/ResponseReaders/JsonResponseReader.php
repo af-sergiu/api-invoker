@@ -11,11 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class JsonResponseReader implements IResponseReader
 {
-    /**
-     * @param ResponseInterface $response
-     * @return array
-     */
-    public function read(ResponseInterface $response)
+    public function read(ResponseInterface $response): array
     {
         $body = $response->getBody()->getContents();
         return json_decode($body, true);

@@ -18,10 +18,7 @@ use Psr\Container\ContainerInterface;
 
 abstract class MethodFactory implements IMethodFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

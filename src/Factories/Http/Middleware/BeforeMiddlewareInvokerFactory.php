@@ -15,7 +15,7 @@ class BeforeMiddlewareInvokerFactory implements IMiddlewareInvokerFactory
      * @param ContainerInterface $container
      * @return IBeforeMiddlewareInvoker
      */
-    public function create(ContainerInterface $container)
+    public function create(ContainerInterface $container): object
     {
         $chainBuilder = $this->createChainBuilder($container);
         return new BeforeMiddlewareInvoker($chainBuilder);

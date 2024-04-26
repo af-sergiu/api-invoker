@@ -34,5 +34,4 @@ class GuzzleInvokerFactory implements IInvokerFactory
     {
         return new GuzzleExceptionsAdapter();
     }
-
 }

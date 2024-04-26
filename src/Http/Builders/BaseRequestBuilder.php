@@ -8,42 +8,24 @@ use Psr\Http\Message\RequestInterface;
 
 abstract class BaseRequestBuilder implements IRequestBuilder
 {
-    /**
-     * @var RequestInterface
-     */
-    protected $request;
-    /**
-     * @var string
-     */
-    protected $httpMethod;
-    /**
-     * @var string
-     */
-    protected $uri;
-    /**
-     * @var array
-     */
-    protected $headers;
-    /**
-     * @var string
-     */
-    protected $body;
-    /**
-     * @var string
-     */
-    protected $urlEncodedParameters='';
+    protected RequestInterface $request;
+    protected string $httpMethod;
+    protected string $uri;
+    protected array $headers;
+    protected string $body;
+    protected string $urlEncodedParameters='';
 
-    final public function setMethod(string $httpMethod)
+    final public function setMethod(string $httpMethod): void
     {
         $this->httpMethod = $httpMethod;
     }
 
-    final public function setUri(string $uri)
+    final public function setUri(string $uri): void
     {
         $this->uri = $uri;
     }
 
-    final public function setHeaders(array $addHeaders)
+    final public function setHeaders(array $addHeaders): void
     {
         $this->headers = array_merge($this->getRequiredHeaders(), $addHeaders);
     }
@@ -53,7 +35,7 @@ abstract class BaseRequestBuilder implements IRequestBuilder
      */
     abstract protected function getRequiredHeaders(): array;
 
-    final public function setBodyParameters(array $parameters)
+    final public function setBodyParameters(array $parameters): void
     {
         $this->body = $this->prepareBodyParameters($parameters);
     }
@@ -64,12 +46,12 @@ abstract class BaseRequestBuilder implements IRequestBuilder
      */
     abstract protected function prepareBodyParameters(array $parameters): string;
 
-    public function setUriParameters(array $parameters)
+    public function setUriParameters(array $parameters): void
     {
         $this->urlEncodedParameters = http_build_query($parameters);
     }
 
-    final public function setBody(string $parameters)
+    final public function setBody(string $parameters): void
     {
         $this->body = $parameters;
     }

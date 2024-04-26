@@ -1,12 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace AfSergiu\ApiInvoker\Tests;
+namespace AfSergiu\ApiInvoker\Tests\Units\Http;
 
 use AfSergiu\ApiInvoker\Http\Middleware\MiddlewareChainBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @covers MiddlewareChainBuilder
+ */
 class MiddlewareChainBuilderTest extends TestCase
 {
     /**

@@ -14,18 +14,12 @@ interface IRequestConstructor
 
     /**
      * Устанавливает билдер, который будет конструировать запрос
-     * @param IRequestBuilder $builder
-     * @return void
      */
     public function setBuilder(IRequestBuilder $builder): void;
 
     /**
      * Конструирует запрос с помощью билдера по умолчанию, чтобы не создавать большое кол-во классов для простых запросов
-     * @param string $method
-     * @param string $uri
      * @param array|string $parameters
-     * @param array $addHeaders
-     * @return RequestInterface
      */
-    public function create(string $method='GET', string $uri, $parameters, array $addHeaders=[]): RequestInterface;
+    public function create(string $method, string $uri, mixed $parameters, array $addHeaders=[]): RequestInterface;
 }

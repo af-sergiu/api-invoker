@@ -12,14 +12,8 @@ use AfSergiu\ApiInvoker\Exceptions\ServerException;
 
 abstract class BaseRequestInvoker implements IRequestInvoker
 {
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
-    /**
-     * @var IExceptionsAdapter
-     */
-    private $exceptionsAdapter;
+    private ResponseInterface $response;
+    private IExceptionsAdapter $exceptionsAdapter;
 
     public function __construct(IExceptionsAdapter $exceptionsAdapter)
     {
@@ -31,7 +25,6 @@ abstract class BaseRequestInvoker implements IRequestInvoker
      * @throws ClientException
      * @throws NetworkException
      * @throws \Throwable
-     * @param RequestInterface $request
      */
     public function invoke(RequestInterface $request): ResponseInterface
     {

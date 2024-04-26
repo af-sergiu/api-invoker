@@ -3,16 +3,17 @@
 namespace AfSergiu\ApiInvoker\Tests\Systems\Http\Middleware;
 
 use AfSergiu\ApiInvoker\Factories\Http\Middleware\AfterMiddlewareInvokerFactory;
+use AfSergiu\ApiInvoker\Http\Middleware\AfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Tests\Factories\Mock\Http\ResponseMockFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @covers AfterMiddlewareInvoker
+ */
 class AfterMiddlewareInvokerTest extends MiddlewareInvoker
 {
-    /**
-     * @var MockObject
-     */
-    private $response;
+    private MockObject|ResponseInterface $response;
 
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {

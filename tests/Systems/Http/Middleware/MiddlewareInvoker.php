@@ -7,21 +7,14 @@ use AfSergiu\ApiInvoker\Tests\Factories\Mock\Http\Middleware\MiddlewareMockFacto
 use AfSergiu\ApiInvoker\Tests\Factories\Mock\Http\RequestMockFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
 
 abstract class MiddlewareInvoker extends TestCase
 {
-    /**
-     * @var array
-     */
-    protected $containerMiddlewareEntries;
-    /**
-     * @var MockObject
-     */
-    protected $container;
-    /**
-     * @var MockObject
-     */
-    protected $request;
+    protected array $containerMiddlewareEntries;
+    protected MockObject|ContainerInterface $container;
+    protected MockObject|RequestInterface $request;
 
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {

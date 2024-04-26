@@ -7,14 +7,8 @@ use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IMiddlewareChainBuilder;
 
 abstract class MiddlewareInvoker
 {
-    /**
-     * @var \Closure
-     */
-    protected $middlewareChain;
-    /**
-     * @var IMiddlewareChainBuilder
-     */
-    private $chainBuilder;
+    protected \Closure $middlewareChain;
+    private IMiddlewareChainBuilder $chainBuilder;
 
     public function __construct(IMiddlewareChainBuilder $chainBuilder)
     {

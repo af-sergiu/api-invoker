@@ -1,0 +1,16 @@
+version: '3.0'
+
+services:
+  php-cli:
+    build:
+      context: ./
+      args:
+        user: ${USER}
+        uid: ${USER_ID}
+    volumes:
+      - ./:/api-invoker
+    command: >
+      bash -c "sleep 10000"
+    container_name: ${PROJECT_NAME}-php-cli
+    environment:
+      - PROJECT_NAME=${PROJECT_NAME}

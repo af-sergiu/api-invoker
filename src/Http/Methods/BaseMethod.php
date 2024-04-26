@@ -16,54 +16,24 @@ use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddleware;
 
 abstract class BaseMethod implements IMethod
 {
-    /**
-     * @var string
-     */
-    protected $httpMethod = 'GET';
-    /**
-     * @var string
-     */
-    protected $uri = '';
-    /**
-     * @var array
-     */
-    protected $addHeaders=[];
+    protected string $httpMethod = 'GET';
+    protected string $uri = '';
+    protected array $addHeaders=[];
     /**
      * @var array<\Closure|IBeforeMiddleware>
      */
-    protected $beforeMiddleware = [];
+    protected array $beforeMiddleware = [];
     /**
      * @var array<\Closure|IAfterMiddleware>
      */
-    protected $afterMiddleware = [];
-    /**
-     * @var mixed
-     */
-    protected $parameters;
-    /**
-     * @var IRequestConstructor
-     */
-    protected $requestConstructor;
-    /**
-     * @var RequestInterface
-     */
-    private $request;
-    /**
-     * @var BaseRequestInvoker
-     */
-    private $requestInvoker;
-    /**
-     * @var IBeforeMiddlewareInvoker
-     */
-    private $beforeMiddlewareInvoker;
-    /**
-     * @var IAfterMiddlewareInvoker
-     */
-    private $afterMiddlewareInvoker;
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
+    protected array $afterMiddleware = [];
+    protected mixed $parameters;
+    protected IRequestConstructor $requestConstructor;
+    private RequestInterface $request;
+    private BaseRequestInvoker $requestInvoker;
+    private IBeforeMiddlewareInvoker $beforeMiddlewareInvoker;
+    private IAfterMiddlewareInvoker $afterMiddlewareInvoker;
+    private ResponseInterface $response;
 
     public function __construct(
         IRequestConstructor $requestConstructor,
@@ -88,15 +58,12 @@ abstract class BaseMethod implements IMethod
     }
 
     /**
-     * @param IResponseReader $responseReader
-     * @return mixed|void
      * @throws \AfSergiu\ApiInvoker\Exceptions\ClientException
      * @throws \AfSergiu\ApiInvoker\Exceptions\NetworkException
      * @throws \AfSergiu\ApiInvoker\Exceptions\ServerException
      * @throws \Throwable
-     * @return mixed
      */
-    final public function call(IResponseReader $responseReader)
+    final public function call(IResponseReader $responseReader): mixed
     {
         $this->request = $this->createRequest();
         $this->invokeBeforeMiddleware();
@@ -144,11 +111,7 @@ abstract class BaseMethod implements IMethod
         return [];
     }
 
-    /**
-     * @param IResponseReader $responseReader
-     * @return mixed
-     */
-    private function readRequest(IResponseReader $responseReader)
+    private function readRequest(IResponseReader $responseReader): mixed
     {
         return $responseReader->read($this->response);
     }

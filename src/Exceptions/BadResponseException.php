@@ -11,10 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class BadResponseException extends \Exception implements RequestException
 {
-    /**
-     * @var ResponseInterface $response
-     */
-    private $response;
+    private ?ResponseInterface $response;
 
     public function setResponse(ResponseInterface $response): void
     {

@@ -8,14 +8,8 @@ use Psr\Container\NotFoundExceptionInterface;
 
 final class MiddlewareChainBuilder implements IMiddlewareChainBuilder
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    /**
-     * @var array
-     */
-    private $middlewareList = [];
+    private ContainerInterface $container;
+    private array $middlewareList = [];
 
     public function __construct(ContainerInterface $container)
     {
@@ -61,18 +55,12 @@ final class MiddlewareChainBuilder implements IMiddlewareChainBuilder
         };
     }
 
-    /**
-     * @param $middleware
-     * @return mixed
-     */
-    private function resolveMiddleware($middleware)
+    private function resolveMiddleware(string $middleware): mixed
     {
         if (is_callable($middleware) && function_exists($middleware)) {
             return $middleware;
-        } elseif (is_string($middleware)) {
-            return $this->instantiateMiddleware($middleware);
         } else {
-            throw new \RuntimeException("Incorrect middlware type");
+            return $this->instantiateMiddleware($middleware);
         }
     }
 

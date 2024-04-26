@@ -7,14 +7,13 @@ interface IMethod
     /**
      * Change default request builder
      * @param IRequestBuilder|array|string $parameters
-     * @return IMethod
      */
-    public function setParameters($parameters): IMethod;
+    public function setParameters(mixed $parameters): IMethod;
 
     /**
      * Call and read request
      * @param IResponseReader $responseReader
      * @return mixed
      */
-    public function call(IResponseReader $responseReader);
+    public function call(IResponseReader $responseReader): mixed;
 }

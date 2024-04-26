@@ -3,9 +3,13 @@
 namespace AfSergiu\ApiInvoker\Tests\Systems\Http\Middleware;
 
 use AfSergiu\ApiInvoker\Factories\Http\Middleware\BeforeMiddlewareInvokerFactory;
+use AfSergiu\ApiInvoker\Http\Middleware\BeforeMiddlewareInvoker;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * @covers BeforeMiddlewareInvoker
+ */
 class BeforeMiddlewareInvokerTest extends MiddlewareInvoker
 {
     public function testInvokerCallAllMiddleware(): void

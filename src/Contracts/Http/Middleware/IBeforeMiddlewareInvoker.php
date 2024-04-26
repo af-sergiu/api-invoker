@@ -16,9 +16,5 @@ interface IBeforeMiddlewareInvoker
      */
     public function createChain(array $middleware): void;
 
-    /**
-     * @param RequestInterface $request
-     * @return RequestInterface
-     */
     public function invokeChain(RequestInterface $request): RequestInterface;
 }

@@ -12,5 +12,5 @@ interface IMiddlewareInvokerFactory
      * @param ContainerInterface $container
      * @return IAfterMiddlewareInvoker|IBeforeMiddlewareInvoker
      */
-    public function create(ContainerInterface $container);
+    public function create(ContainerInterface $container): object;
 }

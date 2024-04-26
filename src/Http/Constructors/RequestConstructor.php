@@ -13,17 +13,14 @@ use Psr\Http\Message\RequestInterface;
 
 final class RequestConstructor implements IRequestConstructor
 {
-    /**
-     * @var BaseRequestBuilder
-     */
-    private $builder;
+    private BaseRequestBuilder $builder;
 
     public function setBuilder(IRequestBuilder $builder): void
     {
         $this->builder = $builder;
     }
 
-    public function create(string $method = 'GET', string $uri, $parameters, array $addHeaders=[]): RequestInterface
+    public function create(string $method, string $uri, $parameters, array $addHeaders=[]): RequestInterface
     {
         $this->builder->setMethod($method);
         $this->builder->setUri($uri);

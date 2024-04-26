@@ -12,49 +12,36 @@ interface IRequestBuilder
 {
     /**
      * Set http method
-     * @param string $httpMethod
-     * @return mixed
      */
-    public function setMethod(string $httpMethod);
+    public function setMethod(string $httpMethod): void;
 
     /**
      * Set uri
-     * @param string $uri
-     * @return mixed
      */
-    public function setUri(string $uri);
+    public function setUri(string $uri): void;
 
     /**
      * Set headers
-     * @param array $headers
-     * @return mixed
      */
-    public function setHeaders(array $addHeaders);
+    public function setHeaders(array $addHeaders): void;
 
     /**
      * Set body request
-     * @param string $parameters
-     * @return mixed
      */
-    public function setBody(string $parameters);
+    public function setBody(string $parameters): void;
 
     /**
      * Set converted to string array parameters in api defined format (json, xml etc) to body
-     * @param array $parameters
-     * @return mixed
      */
-    public function setBodyParameters(array $parameters);
+    public function setBodyParameters(array $parameters): void;
 
     /**
      * Set converted to string array parameters for GET requests
-     * @param array $parameters
-     * @return mixed
      */
-    public function setUriParameters(array $parameters);
+    public function setUriParameters(array $parameters): void;
 
     /**
      * Get result request
-     * @return RequestInterface
      */
     public function getResult(): RequestInterface;
 }

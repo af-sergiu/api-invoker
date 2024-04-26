@@ -6,5 +6,5 @@ use Psr\Http\Message\ResponseInterface;
 
 interface IResponseReader
 {
-    public function read(ResponseInterface $response);
+    public function read(ResponseInterface $response): mixed;
 }
