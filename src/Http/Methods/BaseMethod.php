@@ -8,6 +8,7 @@ use AfSergiu\ApiInvoker\Contracts\Http\IResponseReader;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IAfterMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\Http\Middleware\IBeforeMiddlewareInvoker;
 use AfSergiu\ApiInvoker\Contracts\IArrayStructureBuilder;
+use AfSergiu\ApiInvoker\Exceptions\BadResponseException;
 use AfSergiu\ApiInvoker\Http\Invokers\BaseRequestInvoker;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -98,11 +99,17 @@ abstract class BaseMethod implements IMethod
      */
     final public function call(IResponseReader $responseReader)
     {
-        $this->request = $this->createRequest();
-        $this->invokeBeforeMiddleware();
-        $this->response = $this->callRequest();
-        $this->invokeAfterMiddleware();
-        return $this->readRequest($responseReader);
+        try {
+            $this->request = $this->createRequest();
+            $this->invokeBeforeMiddleware();
+            $this->response = $this->callRequest();
+            $this->invokeAfterMiddleware();
+            return $this->readRequest($responseReader);
+        } catch (BadResponseException $exception) {
+            $this->response = $exception->getResponse();
+            $this->invokeAfterMiddleware();
+            throw $exception;
+        }
     }
 
     protected function createRequest(): RequestInterface
