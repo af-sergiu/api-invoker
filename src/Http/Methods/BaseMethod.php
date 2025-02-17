@@ -159,4 +159,14 @@ abstract class BaseMethod implements IMethod
     {
         return $responseReader->read($this->response);
     }
+
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
+
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
+    }
 }
