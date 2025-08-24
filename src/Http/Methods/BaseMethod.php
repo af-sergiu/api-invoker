@@ -97,7 +97,7 @@ abstract class BaseMethod implements IMethod
      * @throws \Throwable
      * @return mixed
      */
-    final public function call(IResponseReader $responseReader)
+    public function call(IResponseReader $responseReader)
     {
         try {
             $this->request = $this->createRequest();
