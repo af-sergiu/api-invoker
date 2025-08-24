@@ -64,7 +64,7 @@ abstract class BaseMethod implements IMethod
      * @throws \AfSergiu\ApiInvoker\Exceptions\ServerException
      * @throws \Throwable
      */
-    final public function call(IResponseReader $responseReader): mixed
+    public function call(IResponseReader $responseReader): mixed
     {
         try {
             $this->request = $this->createRequest();
