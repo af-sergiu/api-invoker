@@ -137,4 +137,9 @@ abstract class BaseMethod implements IMethod
     {
         return $this->request;
     }
+
+    public function setRequest(RequestInterface $request): void
+    {
+        $this->request = $request;
+    }
 }
