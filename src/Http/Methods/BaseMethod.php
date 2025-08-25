@@ -142,4 +142,9 @@ abstract class BaseMethod implements IMethod
     {
         $this->request = $request;
     }
+
+    public function getParameters(): mixed
+    {
+        return $this->parameters;
+    }
 }
