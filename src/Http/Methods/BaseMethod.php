@@ -122,7 +122,7 @@ abstract class BaseMethod implements IMethod
         );
     }
 
-    private function invokeBeforeMiddleware(): void
+    protected function invokeBeforeMiddleware(): void
     {
         $this->beforeMiddlewareInvoker->createChain($this->beforeMiddleware);
         $this->beforeMiddlewareInvoker->invokeChain($this->request);
@@ -140,7 +140,7 @@ abstract class BaseMethod implements IMethod
         return $this->requestInvoker->invoke($this->request);
     }
 
-    private function invokeAfterMiddleware(): void
+    protected function invokeAfterMiddleware(): void
     {
         $this->afterMiddlewareInvoker->createChain($this->afterMiddleware);
         $this->afterMiddlewareInvoker->invokeChain($this->response, $this->request);
@@ -163,6 +163,11 @@ abstract class BaseMethod implements IMethod
     public function getResponse(): ResponseInterface
     {
         return $this->response;
+    }
+
+    protected function setResponse(ResponseInterface $response): void
+    {
+        $this->response = $response;
     }
 
     public function getRequest(): RequestInterface
